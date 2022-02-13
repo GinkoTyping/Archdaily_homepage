@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>厂区方案平面</title>
+    <style>
+        @font-face {
+          font-family: "iconfont"; /* Project id  */
+          src: url('./fonts/iconfont.ttf?t=1640962572538') format('truetype');
+        }
+        
+        .iconfont {
+          font-family: "iconfont" !important;
+          font-size: 20px;
+          font-style: normal;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .icon-sousuo:before {
+          content: "\f00a8";
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            text-decoration: none;
+        }
+        .line {
+            width: 0;
+            height: 20px;
+            margin: 5px 13px 5px 13px;
+            border: none;
+            border-left: 1px solid #d8d8d8;
+        }
+        .header {
+            width: 100%;
+        /* top */
+        }
+        .top {
+            position: relative;
+            height: 78px;
+            margin: 0 200px 78px 200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top .top-left {
+            position: relative;
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+        .top .top-left span {
+            font: normal 400 16px/25px 微软雅黑;
+            color: #767676;
+            display: inline-block;
+            margin: 0 13px 0 13px;
+        }
+        .top .top-left span:hover {
+            color: rgb(106, 148, 200);
+        }
+        .top .top-left .language {
+            display: flex;
+            white-space: nowrap;
+            align-items: center;
+        }
+        .top .top-left #flag {
+            width: 16px;
+            height: 12px;
+            background-color: #cd1526;
+        }
+        .top .top-left .display-1 {
+            box-sizing: border-box;
+            width: 200px;
+            height: 25px;
+            padding-left: 7px;
+        }
+        .top .top-left .display-0 {
+            box-sizing: border-box;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            padding-left: 8px;
+            padding-top: 10px;
+            top: 30px;
+            left: 143px;
+            align-items: flex-start;
+            background-color: rgb(241,241,241);
+            visibility: hidden;
+        }
+        /* 显现 */
+        .visible {
+            visibility: visible;
+
+        }
+        .top .top-right {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .top .top-right a{
+            text-decoration: none;
+            font: normal 700 16px/40px 微软雅黑;
+            color: #444444;
+            display: inline-block;
+            margin: 0 13px 0 13px;
+        }
+        .top .top-right a:nth-child(2) {
+            display: inline-block;
+            padding: 0 15px 0 15px;
+            background-color: #2f6bb8;
+            border-radius: 3px;
+            color: white;
+            position: relative;
+            z-index: 20;
+        }
+        .top-right p {
+            font: normal 400 14px/20px 微软雅黑;
+            color: white;
+        }
+        .zhuce-cufa {
+            box-sizing: border-box;
+            padding: 20px;
+            z-index: 10;
+            width: 200px;
+            height: 95px;
+            background-color: #2f6bb8;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            border-radius: 5px;
+            text-align: center;
+            visibility: hidden;
+        }
+        .sanjiao {
+            position: absolute;
+            top: -10px;
+            left: 95px;
+            width: 0;
+            height: 0;
+            border-top:  none;
+            border: 5px solid #ffffff;
+            border-bottom: 5px solid #2f6bb8;
+        }
+        /* icon */
+        .icon {
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .icon span {
+            font: normal 400 12px 微软雅黑;
+            color: #767676;
+            margin-top: 14px;
+
+        }
+        /* guide */
+        .guide {
+            height: 22px;
+            display: flex;
+            justify-content: center;
+
+        }
+        #guide {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            font: normal 700 20px/22px 微软雅黑 ;
+            color: #424242;
+        }
+        .guide .line {
+            height: 22px;
+            margin: 0;
+        }
+        #guide span {
+            cursor: pointer;
+            margin: 0 24px 0 24px;
+        }
+        #guide span:hover {
+            color: rgb(47,107,184);
+        }
+        /* input */
+        .search #search {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+            width: 660px;
+        }
+        .search input {
+            padding-left: 55px;
+            margin: 40px 0 40px 0;
+            width: 660px;
+            height: 42px;
+            outline: none;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            font: normal 600 14px/42px 微软雅黑;
+        }
+        .search #search span {
+            position: absolute;
+            top: 50%;
+            transform: translate(80%,-50%);
+            left: 0;
+            font-weight: 700;
+            color: rgb(133,133,133);
+        }
+        /* nav */
+        nav {
+            margin: 0 auto;
+            width: 1040px;
+            height: 380px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 88px;
+        }
+        nav .nav-left {
+            width: 730px;
+            height: 380px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        nav .nav-left .small {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .small li:nth-child(1) {
+            background: url(./images/2.jpg) no-repeat ;
+            background-size: cover;
+            cursor: pointer;
+        }
+        .small li:nth-child(2) {
+            background: url(./images/3.jpg) no-repeat ;
+            background-size: cover;
+            cursor: pointer;
+        }
+        .small li:nth-child(3) {
+            background: url(./images/1.jpg) no-repeat ;
+            background-size: cover;
+            cursor: pointer;
+        }
+        nav .nav-left .small li {
+            list-style: none;
+            display: block;
+            width: 170px;
+            height: 120px;
+        }
+        nav .nav-left .big {
+            width: 550px;
+            height: 380px;
+            background-image: url(./images/1.jpg);
+            background-position: center top ;
+            background-size: cover;
+            position: relative;
+        }
+        nav .nav-left .big .big-title {
+            width: 270px;
+            height: 90px;
+            background-color: #fff;
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            font: normal 400 12px/20px 微软雅黑;
+            font-size: normal;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .big-title p {
+            font:normal 500 18px/25px 微软雅黑;
+            color: #306dba;
+        }
+        .big-title:hover p{
+            color: rgb(128,164,218);
+        }
+        nav .nav-right {
+            width: 300px;
+            height: 380px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .nav-right li:nth-child(1) {
+            position: relative;
+            display: block;
+            height: 250px;
+            width: 300px;
+            background: url(./images/4.jpg) no-repeat ;
+            background-size: cover;
+            font: normal 400 12px/14px 微软雅黑;
+            font-size: normal;
+            cursor: pointer;
+        }
+        nav .nav-right p {
+            padding-top: 5px;
+            font:normal 500 14px/20px 微软雅黑;
+            color: #306dba;
+        }
+        nav .nav-right .small-title {
+            padding: 10px;
+            position: absolute;
+            width: 200px;
+            bottom: 20px;
+            left: 0;
+            background: white;
+        }
+        nav .nav-right li:nth-child(2) {
+            display: block;
+            height: 120px;
+            width: 300px;
+            background: url(./images/1.jfif) no-repeat ;
+            background-size: cover;
+        }
+        .maincontent {
+            margin: 0 auto;
+            width: 1040px;
+            display: flex;
+            justify-content: space-between;
+        }
+        /* maincontent-paper */
+        .maincontent .paper {
+            width: 640px;
+        }
+        .part {
+            margin-bottom: 85px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .part a span {
+            font: normal 700 20px/20px 黑体;
+            color: #424242;
+        }
+        .part p {
+            font: normal 400 12px/27px 微软雅黑;
+            color: rgb(118,118,118);
+        }
+        .part .bigpic {
+            margin-top: 20px;
+            width: 100%;
+            height: 430px;
+            background: url(./images/1.jpg) no-repeat;
+            background-size: cover;
+        }
+        .part .smallpic {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0 20px 0;
+        }
+        .smallpic li {
+            width: 115px;
+            height: 115px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            
+        }
+        .smallpic li:nth-child(1) {
+            background-image: url(./images/2.jpg);
+        }
+        .smallpic li:nth-child(2) {
+            background-image: url(./images/3.jpg);
+        }
+        .smallpic li:nth-child(3) {
+            background-image: url(./images/2.jpg);
+        }
+        .smallpic li:nth-child(4) {
+            background-image: url(./images/3.jpg);
+        }
+        .smallpic li:nth-child(5) {
+            background-image: url(./images/2.jpg);
+        }
+        .part .intro {
+            list-style: none;
+            font: normal 400 16px/35px 微软雅黑;
+            color: rgb(68,68,68);
+        }
+        .intro li:first-child {
+            font: normal 700 16px/35px 微软雅黑;           
+        }
+        .part .intro .location {
+            font: normal 700 16px/35px 微软雅黑;
+        }
+        .intro li span {
+            font: normal 400 16px/35px 微软雅黑;
+            color: rgb(47,107,184);
+        }
+        .part-footer {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .part-footer p{
+            font: normal 700 14px/40px 微软雅黑;
+            color: rgb(47,107,184);
+        }
+        .part-footer #like {
+            width: 120px;
+            height: 40px;
+            background-color: rgb(47,107,184);
+            text-align: center;
+            border-radius: 3px;
+        }
+        .part-footer #like p{
+            font: normal 700 14px/40px 微软雅黑;  
+            color: white;
+        }
+        .sidebar {
+            width: 335px;
+        }
+        .sidebar .sidebar-part {
+            margin-bottom: 10px;
+        }
+        .sidebar p {
+            font: normal 700 20px/120px 微软雅黑;
+            color: rgb(68,68,68);
+        }
+        .sidebar li {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+
+        }
+        .sidebar li .sidebar-part-pic {
+            width: 115px;
+            height: 115px;
+            background: url(./images/3.jpg) no-repeat center;
+            background-size: cover;
+        }
+        .sidebar li a {
+            width: 200px;
+            font: normal 700 16px/20px 微软雅黑;
+            color: rgb(68,68,68);
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top">
+            <div class="top-left">
+                <a href="#"><span>提交</span></a>
+                <a href="#"><span>广告</span></a>            
+                <div class="line"></div>
+                <div class="language display-1" id="language">
+                    <div id="flag"></div>
+                    <span>中国</span>
+                </div>
+                <div class="language display-0" id="visible">
+                    <div class="language other">
+                        <div id="flag"></div>
+                        <span>世界</span>  
+                    </div>
+                    <div class="language other">
+                        <div id="flag"></div>
+                        <span>墨西哥</span>  
+                    </div>
+                    <div class="language other">
+                        <div id="flag"></div>
+                        <span>拉丁美洲</span>  
+                    </div>
+                </div>               
+            </div>
+            <div class="icon">
+                <img src="images/logo-cn.png" height="75px" width="145px">
+                <span>世界最受欢迎的建筑网站</span>
+            </div>
+            <div class="top-right">
+                <a href="#"><span>登录</span></a>
+                <a href="#" id="zhuce"><span>注册</span></a>                
+                <div class="line"></div>
+                <a href="#"><span>分类</span></a>
+                <div class="zhuce-cufa" id="zhuce-cufa">
+                    <p>马上注册!保存并收藏您最喜爱的建筑项目及图像资料。</p>
+                    <div class="sanjiao" id="sanjiao"></div>
+                </div>
+                
+
+            </div>
+        </div>
+        <div class="guide">
+            <div id="guide">
+                <span>项目</span>
+                <div class="line"></div>
+                <span>收藏</span>
+                <div class="line"></div>
+                <span>新闻</span>
+                <div class="line"></div>
+                <span>工作机会</span>
+            </div>
+        </div>
+        <div class="search">
+            <div id="search">
+            <input type="search" placeholder="搜索 ArchDaily ">
+            <span class="iconfont">&#xf00a8;</span>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <div class="nav-left">
+            <div class="big">
+                <div class="big-title">
+                    <span>专题</span>
+                    <p>上海杨树浦六厂滨江公共空间更新—电站辅机厂东厂 / 刘宇扬建筑事务所</p>
+                </div>
+            </div>
+            <div class="small">
+                <li id="small-1"></li>
+                <li id="small-2"></li>
+                <li id="small-3"></li>
+            </div>
+        </div>
+        <div class="nav-right">
+            <li id="small-title">
+                <div class="small-title">
+                    <span>编辑精选</span>
+                    <p>招标公告：深圳龙岗区养老护理院重新选址建设工程设计国际招标</p>
+                </div>
+            </li>
+            <li></li>
+        </div>
+    </nav>
+    <div class="maincontent">
+        <div class="paper">
+            <div class="part">
+                <a href="#"><span>待泾村花海民宿改造 / 凡度设计事务所</span></a>
+                <p>大约14小时之前</p>
+                <div class="bigpic"></div>
+                <div class="smallpic">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </div>
+                <div class="intro">
+                    <li>
+                        <span class="location">酒店</span>
+                        ·上海,
+                        <span class="location">中国</span>
+                    </li>
+                    <li>
+                        建筑设计：<span>DUS Studio</span>
+                    </li>
+                    <li>
+                        面积：<span>285</span>㎡
+                    </li>
+                    <li>
+                        项目年份：<span>2021</span>
+                    </li>
+                </div>
+                <div class="part-footer">
+                    <div id="like">
+                        <p>收藏项目</p>
+                    </div>
+                    <p>阅读更多</p>
+                </div>
+
+            </div>
+            <div class="part">
+                <a href="#"><span>待泾村花海民宿改造 / 凡度设计事务所</span></a>
+                <p>大约14小时之前</p>
+                <div class="bigpic"></div>
+                <div class="smallpic">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </div>
+                <div class="intro">
+                    <li>
+                        <span class="location">酒店</span>
+                        ·上海,
+                        <span class="location">中国</span>
+                    </li>
+                    <li>
+                        建筑设计：<span>DUS Studio</span>
+                    </li>
+                    <li>
+                        面积：<span>285</span>㎡
+                    </li>
+                    <li>
+                        项目年份：<span>2021</span>
+                    </li>
+                </div>
+                <div class="part-footer">
+                    <div id="like">
+                        <p>收藏项目</p>
+                    </div>
+                    <p>阅读更多</p>
+                </div>
+
+            </div>
+        </div>
+        <div class="sidebar">
+            <div class="ad">
+                <img src="./images/2.jpg" width="335px">
+            </div>
+            <div class="sidebar-part">
+                <p>最受欢迎</p>
+                <li>
+                    <div class="sidebar-part-pic"></div>
+                    <a href="#">弥勒东风韵美憬阁精选酒店 / CCD香港郑中设计事务所</a>
+                </li>
+                <li>
+                    <div class="sidebar-part-pic"></div>
+                    <a href="#">弥勒东风韵美憬阁精选酒店 / CCD香港郑中设计事务所</a>
+                </li>
+                <li>
+                    <div class="sidebar-part-pic"></div>
+                    <a href="#">弥勒东风韵美憬阁精选酒店 / CCD香港郑中设计事务所</a>
+                </li>
+            </div>
+            <div class="sidebar-part">
+                <p>最受欢迎</p>
+                <li>
+                    <div class="sidebar-part-pic"></div>
+                    <a href="#">弥勒东风韵美憬阁精选酒店 / CCD香港郑中设计事务所</a>
+                </li>
+                <li>
+                    <div class="sidebar-part-pic"></div>
+                    <a href="#">弥勒东风韵美憬阁精选酒店 / CCD香港郑中设计事务所</a>
+                </li>
+                <li>
+                    <div class="sidebar-part-pic"></div>
+                    <a href="#">弥勒东风韵美憬阁精选酒店 / CCD香港郑中设计事务所</a>
+                </li>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 语言
+        var xianshi = document.querySelector('#visible');
+        var zhongguo = document.querySelector('#language')
+        zhongguo.onmouseover = function() {
+            xianshi.style.visibility = 'visible';
+            this.style.background = 'rgb(241,241,241)';
+        } 
+        xianshi.onmouseover = function() {
+            xianshi.style.visibility = 'visible';
+            zhongguo.style.background = 'rgb(241,241,241)';
+        } 
+        xianshi.onmouseout = function() {
+            xianshi.style.visibility = 'hidden';
+            zhongguo.style.background = 'white';
+        } 
+        zhongguo.onmouseout = function() {
+            xianshi.style.visibility = 'hidden';
+            zhongguo.style.background = 'white';
+        } 
+        console.log(xianshi);
+        console.log(zhongguo);
+
+        // 注册
+        var zhuce = document.querySelector('#zhuce');
+        var cufa = document.querySelector('#zhuce-cufa');
+        zhuce.onmouseover = function() {
+            cufa.style.visibility = 'visible';
+            this.style.opacity = '0.8';
+        }
+        zhuce.onmouseout = function() {
+            cufa.style.visibility = 'hidden';
+            this.style.opacity = '1';
+        }
+        
+        // 图片
+        var bpic = document.querySelector('.big');
+        var spic1 = document.querySelector('#small-1');
+        var spic2 = document.querySelector('#small-2');
+        var spic3 = document.querySelector('#small-3');
+        spic1.onmouseover = function () {
+            spic2.style.opacity = '0.7';
+            spic3.style.opacity = '0.7';
+            bpic.style.backgroundImage = 'url(./images/2.jpg)';
+        }
+        spic1.onmouseout = function () {
+            spic2.style.opacity = '1';
+            spic3.style.opacity = '1';
+        }
+        spic2.onmouseover = function () {
+            spic1.style.opacity = '0.7';
+            spic3.style.opacity = '0.7';
+            bpic.style.backgroundImage = 'url(./images/3.jpg)';
+        }
+        spic2.onmouseout = function () {
+            spic1.style.opacity = '1';
+            spic3.style.opacity = '1';
+        }
+        spic3.onmouseover = function () {
+            spic2.style.opacity = '0.7';
+            spic1.style.opacity = '0.7';
+            bpic.style.backgroundImage = 'url(./images/1.jpg)';
+        }
+        spic3.onmouseout = function () {
+            spic1.style.opacity = '1';
+            spic2.style.opacity = '1';
+        }
+
+
+
+
+    </script>
+
+
+    
+</body>
+</html>
